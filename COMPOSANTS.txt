@@ -1,0 +1,4 @@
+composer require jms/serializer-bundle
+composer require doctrine maker
+composer require twig
+composer require annotations
