@@ -74,11 +74,17 @@ class Client
      * @ORM\OneToMany(targetEntity="App\Entity\Facture", mappedBy="client")
      */
     private $factures;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chantier", mappedBy="client")
+     */
+    private $chantiers;
 
     public function __construct()
     {
         $this->rdvs = new ArrayCollection();
         $this->factures = new ArrayCollection();
+        $this->chantiers = new ArrayCollection();
     }
 
     /**
@@ -96,5 +102,13 @@ class Client
     public function getFacture()
     {
         return $this->factures;
+    }
+    
+    /**
+     * @return Collection|Chantier[]
+     */
+    public function getChantier()
+    {
+        return $this->chantiers;
     }
 }

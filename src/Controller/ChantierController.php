@@ -1,32 +1,33 @@
 <?php
 
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Rdv;
+use App\Entity\Chantier;
 use App\Entity\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
-class RdvController extends Controller{
-//---------------MODIFICATION Rdv-----------------------------------
+class ChantierController extends Controller{
+   //---------------MODIFICATION Chantier-----------------------------------
     /**
-     * @Route("/Rdv/{id}")
+     * @Route("/Chantier/{id}")
      * @Method({"POST"})
      */
-    public function RdvUpdate(Request $request, $id)
+    public function ChantierUpdate(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $rdv = $em->getRepository(Rdv::class)->find($id);
-
+        $chantier = $em->getRepository(Chantier::class)->find($id);
+        
+        $nom = $request->get("nom");
         $date = new \DateTime($request->get("date"));
-        $heure = $request->get("heure");
+        $duree = $request->get("duree");
                         
-        $rdv->setDate($date);
-        $rdv->setHeure($heure);
+        $chantier->setNom($nom);
+        $chantier->setDate($date);
+        $chantier->setDuree($duree);
             
         $em->flush();
 
@@ -34,15 +35,16 @@ class RdvController extends Controller{
     }
     
     
-//---------------AJOUT Rdv-----------------------------------    
+//---------------AJOUT Chantier-----------------------------------    
     /**
-     * @Route("/Rdv")
+     * @Route("/Chantier")
      * @Method({"POST"})
      */
-    public function RdvInsert(Request $request)
+    public function ChantierInsert(Request $request)
     {
+        $nom = $request->get("nom");
         $date = $request->get("date");
-        $heure = $request->get("heure");
+        $duree = $request->get("duree");
         $idClient = $request->get("client");
         
         $client = $this->getDoctrine()
@@ -51,27 +53,28 @@ class RdvController extends Controller{
         
         $em = $this->getDoctrine()->getManager();
             
-        $rdv = new Rdv();
+        $chantier = new Chantier();
         
-        $rdv->setDate(new \DateTime($date));
-        $rdv->setHeure($heure);
-        $rdv->setClient($client);
+        $chantier->setNom($nom);
+        $chantier->setDate(new \DateTime($date));
+        $chantier->setDuree($duree);
+        $chantier->setClient($client);
 
-        $em->persist($rdv);
+        $em->persist($chantier);
 
         $em->flush();
         
         return new Response('', Response::HTTP_CREATED);
     }
     
-//---------------SELECT ON 1 Rdv-----------------------------------
+//---------------SELECT ON 1 Chantier-----------------------------------
     /**
-     * @Route("/Rdv/{id}")
+     * @Route("/Chantier/{id}")
      * @Method({"GET"})
      */
-    public function RdvSelect(Rdv $rdv)
+    public function ChantierSelect(Chantier $chantier)
     {
-        $json = $this->get('jms_serializer')->serialize($rdv, 'json');
+        $json = $this->get('jms_serializer')->serialize($chantier, 'json');
 
         $response = new Response($json);
         $response->headers->set("Content-Type", "application/json");
@@ -80,15 +83,15 @@ class RdvController extends Controller{
         
     }
     
-//---------------SUPPRESSION Rdv-----------------------------------
+//---------------SUPPRESSION Chantier-----------------------------------
     /**
-     * @Route("/Rdv/{id}")
+     * @Route("/Chantier/{id}")
      * @Method({"DELETE"})
      */
-    public function RdvDelete(Rdv $rdv)
+    public function ChantierDelete(Chantier $chantier)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($rdv);
+        $em->remove($chantier);
         $em->flush();
         return new Response('', Response::HTTP_OK);
         
@@ -96,15 +99,15 @@ class RdvController extends Controller{
     
 
     
-//---------------SELECT ON ALL Rdv-----------------------------------   
+//---------------SELECT ON ALL Chantier-----------------------------------   
     /**
-     * @Route("/Rdv")
+     * @Route("/Chantier")
      * @Method({"GET"})
      */
-    public function FactureSelectAll()
+    public function ChantierSelectAll()
     {
        
-        $rdv = $this->getDoctrine()->getrepository(Rdv::class)->findAll();
+        $rdv = $this->getDoctrine()->getrepository(Chantier::class)->findAll();
         $json = $this->get('jms_serializer')->serialize($rdv, 'json');
 
         $response = new Response($json);
