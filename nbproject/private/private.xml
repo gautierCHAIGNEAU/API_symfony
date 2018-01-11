@@ -7,10 +7,13 @@
             <file>file:/C:/wamp64/www/API_symfony/src/Entity/Facture.php</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Controller/ClientController.php</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Controller/RdvController.php</file>
+            <file>file:/C:/wamp64/www/API_symfony/config/routes.yaml</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Controller/FactureController.php</file>
+            <file>file:/C:/wamp64/www/API_symfony/src/Repository/ClientRepository.php</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Entity/Client.php</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Entity/Rdv.php</file>
             <file>file:/C:/wamp64/www/API_symfony/src/Entity/Chantier.php</file>
+            <file>file:/C:/wamp64/www/API_symfony/src/Repository/ChantierRepository.php</file>
             <file>file:/C:/wamp64/www/API_symfony/public/index.php</file>
         </group>
     </open-files>

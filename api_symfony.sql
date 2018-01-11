@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 13 Décembre 2017 à 16:02
+-- Généré le :  Jeu 11 Janvier 2018 à 07:52
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `api_symfony`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chantier`
+--
+
+CREATE TABLE `chantier` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `nom` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `duree` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `chantier`
+--
+
+INSERT INTO `chantier` (`id`, `client_id`, `nom`, `date`, `duree`) VALUES
+(1, 4, 'Chantier Pau', '2018-04-08', 3);
 
 -- --------------------------------------------------------
 
@@ -83,7 +104,8 @@ INSERT INTO `migration_versions` (`version`) VALUES
 ('20171213142224'),
 ('20171213142321'),
 ('20171213143547'),
-('20171213144002');
+('20171213144002'),
+('20180110164756');
 
 -- --------------------------------------------------------
 
@@ -109,6 +131,13 @@ INSERT INTO `rdv` (`id`, `date`, `heure`, `client_id`) VALUES
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `chantier`
+--
+ALTER TABLE `chantier`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_636F27F619EB6921` (`client_id`);
 
 --
 -- Index pour la table `client`
@@ -141,6 +170,11 @@ ALTER TABLE `rdv`
 --
 
 --
+-- AUTO_INCREMENT pour la table `chantier`
+--
+ALTER TABLE `chantier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT pour la table `client`
 --
 ALTER TABLE `client`
@@ -158,6 +192,12 @@ ALTER TABLE `rdv`
 --
 -- Contraintes pour les tables exportées
 --
+
+--
+-- Contraintes pour la table `chantier`
+--
+ALTER TABLE `chantier`
+  ADD CONSTRAINT `FK_636F27F619EB6921` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`);
 
 --
 -- Contraintes pour la table `facture`
