@@ -1,0 +1,338 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+    
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="http://localhost/API_symfony/public/index.php/">API Symfony</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="./Clients">Clients <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./Factures">Factures</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./Rdvs">Rendez-vous</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./Chantiers">Chantiers</a>
+            </li>
+          </ul>
+        </nav>
+
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <h1>Rdvs</h1>
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addRdv">Ajouter Rdv</button>
+          <div class="table-responsive">
+<div id="tableaurdv" class="panel panel-primary spacer">
+
+    <div class="panel-body">
+
+      <table class="table table-striped">
+        <tr id="tbody">
+          <th>Id</th>
+          <th>Date</th>
+          <th>Heure</th>
+          <th>Client</th>
+          <th></th>
+        </tr>
+ 
+      </table>
+    </div>
+</div>
+
+
+<script>
+    //Appel API liste rdv - retourne un JSON
+    $(document).ready(function(){
+       $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Rdv",
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            success: function(rdv) {                
+                for (var i = 0 ; i < rdv.length ; i++){
+                    var ligne = $("<tr></tr>");
+                                ligne.append($("<td>" + rdv[i].id + "</td>"));
+				ligne.append($("<td>" + rdv[i].date + "</td>"));
+                                ligne.append($("<td>" + rdv[i].heure + "</td>"));
+				ligne.append($("<td>" + rdv[i].client.nom + "</td>"));
+                                ligne.append($("<td>\n\
+                                                <button  class='supprrdv btn btn-primary' id="+rdv[i].id+">Supprimer</button>\n\
+                                                \n\<button  data-toggle='modal' data-target='#modifRdv' class='modifrdv btn btn-primary' id="+rdv[i].id+">Modifier </button>\n\
+                                                </td>"));
+                                $("tbody").append(ligne);
+                } 
+            }
+        });
+    });
+
+</script>
+
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+  
+<!-- Modal-Ajout CLient -->
+<div id="addRdv" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Ajouter rdv</h3>
+
+       <form method="post" action="#" id="addrdvform">
+    
+            <div class="form-group">
+              <label>Date (2017-12-31)</label>
+              <input type="text" class="form-control" name="date">
+            </div>
+
+            <div class="form-group">
+              <label>Heure</label>
+              <input type="text" class="form-control" name="heure">
+            </div>
+           
+            <input type="submit" class="btn btn-primary" value="Ajouter">
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+       
+    </div>
+ 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+   //Ajouter Rdv
+   $(function(){
+       $("#addrdvform").submit(function(){
+          client=$(this).find("input[name=idclient]").val();
+          date=$(this).find("input[name=date]").val();
+          heure=$(this).find("input[name=heure]").val();
+          
+          $.ajax({
+                url: "http://localhost/API_symfony/public/index.php/Rdv",
+                type: 'post',
+                data: 'client=' + client + '&date=' + date + '&heure=' + heure,
+                dataType: 'html',
+                success: function(data) {
+                  document.location.href="http://localhost/API_symfony/public/index.php/Rdvs"
+                }
+              });
+                                    }
+                            );
+
+                }
+    );
+</script> 
+
+
+<script>
+    //DELETE rdv
+    
+    $(document).on('click', 'button.supprrdv', function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Rdv/"+id,
+            type:"delete",
+            contentType: "application/json; charset=utf-8",
+            success: function(msg) {
+
+                document.location.href="http://localhost/API_symfony/public/index.php/Rdvs"
+            }
+        }); 
+        
+    });
+</script>
+
+
+
+
+<!-- Modal-Modif CLient -->
+<div id="modifRdv" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Modifier un rdv</h3>
+
+       <form id="modifrdv">
+            
+           <div class="form-group">
+              <label>ID</label>
+             <input type="text"  class="form-control" name="id" id="modifId" disabled="disabled"/>
+            </div>
+            <div class="form-group">
+              <label>Date (2017-12-31)</label>
+              <input type="text" class="form-control" name="date" id="modifDate">
+            </div>
+           
+           <div class="form-group">
+              <label>Heure</label>
+              <input type="text" class="form-control" name="heure" id="modifHeure">
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Modifier">
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+    //Envoi rdv dans form
+    
+    $(document).on('click', 'button.modifrdv', function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Rdv/"+id,
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            success: function(rdv) {
+                $("#modifId").val(rdv.id);
+                $("#modifDate").val(rdv.date);
+                $("#modifHeure").val(rdv.heure);
+
+            }
+        });         
+    });
+    
+</script>
+
+<script>
+        //UPDATE de la Rdv à l'aide de l'API
+       $("#modifrdv").submit(function(){
+           id=$(this).find("input[name=id]").val();
+           date=$(this).find("input[name=date]").val();
+           heure=$(this).find("input[name=heure]").val();
+           
+           $.ajax({
+                url: "http://localhost/API_symfony/public/index.php/Rdv/"+id,
+                type: 'post',
+                data: 'date=' + date + '&heure=' + heure,
+                dataType: 'html',
+                success: function(data) {
+                  document.location.href="http://localhost/API_symfony/public/index.php/Rdvs"
+                }
+              });
+       });
+
+</script> 
+
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  padding-bottom: 9px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+}
+
+.sidebar .nav {
+  margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+  margin-left: 0;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+}
+
+/*
+ * Dashboard
+ */
+
+/* Placeholders */
+.placeholders {
+  padding-bottom: 3rem;
+}
+
+.placeholder img {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+</style>
+{% endblock %}

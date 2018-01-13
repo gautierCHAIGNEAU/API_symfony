@@ -1,0 +1,347 @@
+{% extends "base.html.twig" %}
+
+
+
+{% block body %}
+    
+<body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="http://localhost/API_symfony/public/index.php/">API Symfony</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="http://localhost/API_symfony/public/index.php/Clients">Clients <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://localhost/API_symfony/public/index.php/Factures">Factures</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://localhost/API_symfony/public/index.php/Rdvs">Rendez-vous</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://localhost/API_symfony/public/index.php/Chantiers">Chantiers</a>
+            </li>
+          </ul>
+        </nav>
+
+        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          <h1>Clients</h1>
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addClient">Ajouter Client</button>
+          <div class="table-responsive">
+<div id="tableauclient" class="panel panel-primary spacer">
+
+    <div class="panel-body">
+
+      <table class="table table-striped">
+        <tr id="tbody">
+          <th>Id</th>
+          <th>Nom</th>
+          <th>Prenom</th>
+          <th>Adresse</th>
+          <th></th>
+        </tr>
+ 
+      </table>
+    </div>
+</div>
+
+
+<script>
+    //Appel API liste client - retourne un JSON
+    $(document).ready(function(){
+       $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Client",
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            success: function(client) {                
+                for (var i = 0 ; i < client.length ; i++){
+                    var ligne = $("<tr></tr>");
+                                ligne.append($("<td>" + client[i].id + "</td>"));
+				ligne.append($("<td>" + client[i].nom + "</td>"));
+				ligne.append($("<td>" + client[i].prenom + "</td>"));
+				ligne.append($("<td>" + client[i].adresse+ "</td>"));
+                                ligne.append($("<td>\n\
+                                                <button class='supprclient btn btn-primary' id="+client[i].id+">Supprimer</button>\n\
+                                                \n\<button   data-toggle='modal' data-target='#modifClient' class='modifclient btn btn-primary' id="+client[i].id+">Modifier </button>\n\
+                                                </td>"));
+                                $("tbody").append(ligne);
+                } 
+            }
+        });
+    });
+
+</script>
+
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+  
+<!-- Modal-Ajout CLient -->
+<div id="addClient" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Ajouter un client</h3>
+        
+              <form method="post" action="#" id="addclientform">
+    
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" class="form-control" name="nom">
+            </div>
+
+            <div class="form-group">
+              <label>Prenom</label>
+              <input type="text" class="form-control" name="prenom">
+            </div>
+
+            <div class="form-group">
+              <label>Adresse</label>
+              <input type="text" class="form-control" name="adresse">
+            </div>
+
+           <input type="submit" class="btn btn-primary" value="Ajouter">
+
+          </form>
+ 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    
+ 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+   //Ajouter Client
+   $(function(){
+       $("#addclientform").submit(function(){
+          nom=$(this).find("input[name=nom]").val();
+          prenom=$(this).find("input[name=prenom]").val();
+          adresse=$(this).find("input[name=adresse]").val();
+          
+          $.ajax({
+                url: "http://localhost/API_symfony/public/index.php/Client",
+                type: 'post',
+                data: 'nom=' + nom + '&prenom=' + prenom + '&adresse=' + adresse,
+                dataType: 'html',
+                success: function(data) {
+                    document.location.href="http://localhost/API_symfony/public/index.php/Clients"
+                }
+              });
+                                    }
+                            );
+
+                }
+    );
+</script> 
+
+
+<script>
+    //Delete Client
+    
+    $(document).on('click', 'button.supprclient', function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Client/"+id,
+            type:"delete",
+            contentType: "application/json; charset=utf-8",
+            success: function(msg) {
+
+                document.location.href="http://localhost/API_symfony/public/index.php/Clients"
+            }
+        });        
+    });
+    
+</script>
+
+
+
+
+<!-- Modal-Modif CLient -->
+<div id="modifClient" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>Modifier un client</h3>
+
+       <form id="modifclient">
+            
+           <div class="form-group">
+              <label>ID</label>
+             <input type="text"  class="form-control" name="id" id="modifId" disabled="disabled"/>
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" class="form-control" name="nom" id="modifNom">
+            </div>
+
+            <div class="form-group">
+              <label>Prenom</label>
+              <input type="text" class="form-control" name="prenom" id="modifPrenom">
+            </div>
+
+            <div class="form-group">
+              <label>Adresse</label>
+              <input type="text" class="form-control" name="adresse" id="modifAdresse">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Modifier</button>
+
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+    //Envoi client dans form
+    
+    $(document).on('click', 'button.modifclient', function(){
+        var id = $(this).attr('id');
+        $.ajax({
+            url: "http://localhost/API_symfony/public/index.php/Client/"+id,
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            success: function(client) {
+                $("#modifId").val(client.id);
+                $("#modifNom").val(client.nom);
+                $("#modifPrenom").val(client.prenom);
+                $("#modifAdresse").val(client.adresse);
+            }
+        });         
+    });
+    
+</script>
+
+<script>
+        //UPDATE CLIENT
+       $("#modifclient").submit(function(){
+           id=$(this).find("input[name=id]").val();
+           nom=$(this).find("input[name=nom]").val();
+           prenom=$(this).find("input[name=prenom]").val();
+           adresse=$(this).find("input[name=adresse]").val();
+           
+           $.ajax({
+                url: "http://localhost/API_symfony/public/index.php/Client/"+id,
+                type: 'post',
+                data: 'nom=' + nom + '&prenom=' + prenom + '&adresse=' + adresse,
+                dataType: 'html',
+                success: function(data) {
+                  document.location.href="http://localhost/API_symfony/public/index.php/Clients"
+                }
+              });
+       });
+
+</script> 
+
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  padding-bottom: 9px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+}
+
+.sidebar .nav {
+  margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+  margin-left: 0;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+}
+
+/*
+ * Dashboard
+ */
+
+/* Placeholders */
+.placeholders {
+  padding-bottom: 3rem;
+}
+
+.placeholder img {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+</style>
+{% endblock %}

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 11 Janvier 2018 à 07:52
+-- Généré le :  Ven 12 Janvier 2018 à 19:54
 -- Version du serveur :  5.7.14
--- Version de PHP :  7.0.10
+-- Version de PHP :  7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -39,7 +39,13 @@ CREATE TABLE `chantier` (
 --
 
 INSERT INTO `chantier` (`id`, `client_id`, `nom`, `date`, `duree`) VALUES
-(1, 4, 'Chantier Pau', '2018-04-08', 3);
+(1, 4, 'Chantier Pauqsddqsdsqd', '2018-09-05', 3),
+(2, 3, 'sdfsdfsd', '2018-12-23', 34),
+(4, 3, 'undefined', '2018-09-23', 1),
+(5, 3, 'undefined', '2018-09-23', 1),
+(6, 1, 'undefined', '2018-09-23', 3),
+(7, 1, 'undefined', '2018-09-23', 1),
+(8, 1, 'qsqsdsqdqfdsqfsdmimdsfjoidsfijo', '2018-09-23', 1);
 
 -- --------------------------------------------------------
 
@@ -59,9 +65,16 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id`, `nom`, `prenom`, `adresse`) VALUES
-(1, 'Chaigneau', 'Didier', '8 rue dastes 65000 Tarbes'),
-(3, 'Lasarte', 'Marco', '25 avenue du chêne'),
-(4, 'Duclos', 'Sylvain', '3 rue des lilas');
+(1, 'Chaigneau', 'Didier', '8 rue dastes 65000 Tarbe'),
+(3, 'Lasarte', 'Marc', '25 avenue du chêne'),
+(4, 'Duclos', 'sdqdqsd', '3 rue des liqd'),
+(10, 'qsdqs', 'sqdqds', 'dfsdf'),
+(11, 'dfsdfd', 'dsfff', 'dfsdf'),
+(12, 'qsdqsd', 'sdq', 'sdqs'),
+(13, 'qsdqsd', 'sdq', 'sdqs'),
+(16, 'dsfsdf', 'sdfsè_çè_èçèç_', 'sdfsdf'),
+(17, 'dfsdf', 'sdfsdf', 'dfsdf'),
+(18, 'dfsdf', 'sdfsdf', 'dfsdf');
 
 -- --------------------------------------------------------
 
@@ -80,10 +93,10 @@ CREATE TABLE `facture` (
 --
 
 INSERT INTO `facture` (`id`, `prix`, `client_id`) VALUES
-(1, 600, 1),
+(1, 6022321, 1),
 (3, 550, 3),
-(4, 200, 3),
-(5, 85, 4);
+(6, 334, 1),
+(7, 334, 1);
 
 -- --------------------------------------------------------
 
@@ -104,8 +117,7 @@ INSERT INTO `migration_versions` (`version`) VALUES
 ('20171213142224'),
 ('20171213142321'),
 ('20171213143547'),
-('20171213144002'),
-('20180110164756');
+('20171213144002');
 
 -- --------------------------------------------------------
 
@@ -125,8 +137,10 @@ CREATE TABLE `rdv` (
 --
 
 INSERT INTO `rdv` (`id`, `date`, `heure`, `client_id`) VALUES
-(2, '2018-02-20', 14, 3),
-(3, '2018-04-10', 14, 4);
+(4, '2018-09-23', 12, 1),
+(5, '2018-09-23', 127, 1),
+(6, '2018-09-23', 12, 1),
+(7, '2018-04-08', 6, 3);
 
 --
 -- Index pour les tables exportées
@@ -136,8 +150,7 @@ INSERT INTO `rdv` (`id`, `date`, `heure`, `client_id`) VALUES
 -- Index pour la table `chantier`
 --
 ALTER TABLE `chantier`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_636F27F619EB6921` (`client_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `client`
@@ -173,31 +186,25 @@ ALTER TABLE `rdv`
 -- AUTO_INCREMENT pour la table `chantier`
 --
 ALTER TABLE `chantier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `facture`
 --
 ALTER TABLE `facture`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `rdv`
 --
 ALTER TABLE `rdv`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Contraintes pour les tables exportées
 --
-
---
--- Contraintes pour la table `chantier`
---
-ALTER TABLE `chantier`
-  ADD CONSTRAINT `FK_636F27F619EB6921` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`);
 
 --
 -- Contraintes pour la table `facture`
